@@ -107,6 +107,8 @@ public class Kasir {
 		
 		
 		/* 
+			Hanya sebagai referensi/cara lain
+			
 			System.out.println(""
 					+ "\n +________________________________________________________________+"
 					+ "\n |                                                                |"
@@ -122,7 +124,7 @@ public class Kasir {
 			 		System.out.println("\n tekan x untuk kembali ke menu utama");
 					key = inputScanner.next().charAt(0);
 					if (key == 'x') {
-						logout = true;
+						login = true;
 					}
 			*/				
 	}
