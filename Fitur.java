@@ -110,6 +110,9 @@ public class Fitur {
 	 * fitur ke-3
 	 */
 
+	public void tblPenjualanPerTrnsksi() {
+		
+	}
 	
 	
 	/*
@@ -117,32 +120,8 @@ public class Fitur {
 	 * dengan mengolah nilai yang ada di array 2 dimensi class Produk
 	 */
 
-	public void tabelPenjualan() {
+	public void tblPenjualanPerPrdk() {
 		
-		System.out.println("Jumlah barang yang terjual hari ini");
-		System.out.println("+________________________________________________________________+");
-		
-		for (int i = 0; i < produk.listMnplt.length; i++) {
-			System.out.println("");
-			for (String detailPrdk : produk.listMnplt[i]) {
-				
-				if (produk.listMnplt[i][2].equals(detailPrdk)) {
-					System.out.print("| ");
-					fiturTambahan.kursRp(Double.valueOf(detailPrdk));
-					System.out.print(" ");
-					
-				} else if (produk.listMnplt[i][3].equals(detailPrdk)) {
-					System.out.println("| " + "Stok terjual " + detailPrdk);
-				} else if (produk.listMnplt[i][0].equals(detailPrdk)) {
-					System.out.print(" " + detailPrdk + " ");
-				} else {
-					System.out.print("| " + detailPrdk + " ");
-				}
-				
-			}
-			System.out.println("");
-		System.out.println("+________________________________________________________________+");
-		}	
 	}
 	
 }
