@@ -69,7 +69,7 @@ class Fitur {
 		if (jawaban == 'Q' || jawaban == 'q') {
 			pilihProduk = false;
 		}else if (this.termasukIndeks(Character.getNumericValue(jawaban))) {
-			 this.pembelianProduk( Character.getNumericValue(jawaban));
+			 this.pembelianProduk(Character.getNumericValue(jawaban));
 			 pembelianLebihDari1 += 1;
 			 pilihProduk = true;
 		}
