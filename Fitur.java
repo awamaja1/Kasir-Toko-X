@@ -1,127 +1,198 @@
+package aplikasiKasir;
 
+import java.util.Scanner;
 
-public class Fitur {
-
-	private Produk produk = new Produk();
+class Fitur {
 	
 	private Additional fiturTambahan = new Additional();
+	
+	protected Scanner inputScanner = new Scanner(System.in);
+
+	private static Produk produk1 = new Produk("Susu UHT", 20000.00);
+
+	private static Produk produk2 = new Produk("Mie Goreng", 2500.00);
+	
+	private static Produk produk3 = new Produk("Kopi Kapal Api 380g", 23000.00);
+
+	private static Produk produk4 = new Produk("Chocolate Silver Queen", 18000.00);
+	
+	private static Produk produk5 = new Produk("Es Krim", 5000.00);
+
+	private static Produk[] produks = new Produk[5];
 	
 	private double totalSemuaPmbyrn = 0;
 	
 	private double totalBayar = 0;
 	
+	private int jumlahBeli, produkKey;
+	
+	private boolean[] produkTerjual = new boolean[produks.length];
+	
+	private int pembelianLebihDari1 = 0;
+	
+	//private  name = new ();
+	
+	private static void produks() {
+		// TODO Auto-generated method stub
+		produks[0] = produk1;
+		produks[1] = produk2;
+		produks[2] = produk3;
+		produks[3] = produk4;
+		produks[4] = produk5;
+	}
+	
 	public void tabelProduk() {
-		String[][] indeks = produk.tabelProduk();
+		produks();
 		
-		System.out.println("+________________________________________________________________+");
+		System.out.println(" +___________________________________________________________+");
 		
-		for (int i = 0; i < indeks.length; i++) {
-			System.out.println("");
-			for (int j = 0; j < 3; j++) {
+		for (int i = 0; i < produks.length; i++) {
+			
+			System.out.print("\n (" + String.valueOf(i+1) + ") " + produks[i].getNama() + " ");
+			fiturTambahan.kursRp(produks[i].getHarga());		
+		}
+		
+		System.out.println("\n +___________________________________________________________+");
 				
-				if (j == 2) {
-					double hargaProduk = Integer.parseInt(indeks[i][j]);
-					System.out.print(" ");
-					fiturTambahan.kursRp(hargaProduk);
-					System.out.print(" ");
-				} else {
-					System.out.print(" " + indeks[i][j] + " ");
-				}
+	}
+	
+	public boolean termasukIndeks(int at) {
+		produks();
+		return 0 < at && at <= produks.length;
+	}
+	
+	public boolean validasiPembelianBerulang() {
+		System.out.print("\n"
+				+ "Silahkan Pilih Barang, Tekan Q untuk selesai: ");
+		char jawaban = inputScanner.next().charAt(0);
+		boolean pilihProduk = true;
+		if (jawaban == 'Q' || jawaban == 'q') {
+			pilihProduk = false;
+		}else if (this.termasukIndeks(Character.getNumericValue(jawaban))) {
+			 this.pembelianProduk( Character.getNumericValue(jawaban));
+			 pembelianLebihDari1 += 1;
+			 pilihProduk = true;
+		}
+		
+		return pilihProduk;
+	}
+	
+	public void pembelianProduk(int produkKey) {
+		produks();
+		if (!this.termasukIndeks(produkKey)) {
+			System.out.print("\n"
+					+ "Silahkan Pilih Barang: ");
+			produkKey = inputScanner.nextInt();
+			System.out.print("\n"
+					+ "Masukkan jumlah barang: ");
+			jumlahBeli = inputScanner.nextInt();
+		} else {
+			System.out.print("\n"
+					+ "Masukkan jumlah barang: ");
+			jumlahBeli = inputScanner.nextInt();
+		}
+		System.out.print("\n"
+				+ "Jumlah bayar: ");
+		this.jumlahBayar(produkKey, jumlahBeli);
+	}
+	
+  	private void jumlahBayar(int indeks, int jumlahBeli) {
+  		produks();	
+  		Produk produk;
+		double hargaBayar = 0;
+		while(indeks > 0 && indeks <= produks.length) {
+			produk = produks[indeks-1];
+			produkTerjual[indeks-1] = produk.equals(produks[indeks-1]);
+			produk.setCatatanStok(jumlahBeli);
+			//produk.sumStokTerjual(jumlahBeli); --diaktifkan jika ingin menambahkan secara langsung stok produk yang terjual
+			hargaBayar += produk.getHarga() * jumlahBeli;
+			System.out.print(produk.getNama() + " ");
+			fiturTambahan.kursRp(hargaBayar);
+			System.out.println("");	
+			indeks = 0;
+		}
+		totalBayar += hargaBayar;
+	}	
+  	
+  	void strukTagihan() {
+  		produks();
+  		char jawaban;
+  		System.out.println("\n Total yang harus dibayarkan");
+  		System.out.println("-------------------------------");
+  		for (int i = 0; i < produks.length; i++) {
+  			if (produkTerjual[i] == true) {
+  				Produk produk = produks[i];
+  				System.out.print(" " + produk.getNama() + " " + produk.getCatatanStok() + " ");
+  				fiturTambahan.kursRp(produk.getHarga() * produk.getCatatanStok());
+  				System.out.println("");
 			}
 		}
-		System.out.println("\n+________________________________________________________________+");
-				
-	}
-	
-	
-	public void jumlahBayar(int indeks, int jumlahBeli) {
-
-		double hargaBayar = 0;
-		
-		while (indeks > 0 && indeks <= produk.tabelProduk().length) {
-		
-			produk.pencarianProduk(indeks);
-			
-			hargaBayar += produk.hargaProduk * jumlahBeli;
-		
-			produk.tmbhPenjualanBrng(indeks, jumlahBeli);
-			
-			indeks = 0;
-		
+		this.kalkulasiTotal();
+		System.out.print("Tekan K untuk membayar"
+				+ "\n atau tekan T untuk membatalkan pesanan: ");
+		jawaban = this.inputScanner.next().charAt(0);
+		if (jawaban == 'K' || jawaban == 'k') {
+			this.pembelianTerjadi();
+		} else if (jawaban == 'T' || jawaban == 't') {
+			this.pembelianTdkTerjadi();
 		}
-		
-		totalBayar += hargaBayar;
-		
-		fiturTambahan.kursRp(hargaBayar);
-		System.out.println("");
-		
-		
-	/*	
-	 * Argument -> int indeks, int jumlahProduk, String[][] listProduk
-	 * 
-		int searchIndeks = indeks, jumlahAwal = 0, hargaTotal = 0;
-		
-		while (searchIndeks > 0 && searchIndeks <= listProduk.length) {
-			hargaTotal += Integer.parseInt(listProduk[searchIndeks-1][2]) * jumlahProduk;
-			
-			jumlahAwal += Integer.parseInt(listProduk[searchIndeks-1][3]);
-			System.out.println(jumlahAwal);
-			listProduk[searchIndeks-1][3] = (String.valueOf(jumlahAwal + jumlahProduk));
-			System.out.println(listProduk[searchIndeks-1][3]);
-			searchIndeks = 0;
-		}
-		return hargaTotal;
-	*/
-		
 	}
-	
-	public void kalkulasiTotal() {
-		
+  	
+	private void kalkulasiTotal() {
+		System.out.print("           ");
 		fiturTambahan.kursRp(totalBayar);
 		System.out.println("");
-		
-		totalSemuaPmbyrn += totalBayar;
-		
-		totalBayar *= 0;
-		
 	}
 	
 	public void pembelianTerjadi() {
-		
-		produk.konfirmasiStok();
+		produks();
+		Integer[] stokTrjlTrnsksi = new Integer[produks.length];
+		String kdAck = fiturTambahan.amblKdAck();
+		for (int i = 0; i < produks.length; i++) {
+			Produk produk = produks[i];
+			if (produk.getCatatanStok() != 0) {
+				produk.sumStokTerjual(produk.getCatatanStok());
+				produk.setCatatanStok(0);
+			}
+		}
+		totalSemuaPmbyrn += totalBayar; // input semua total pembayaran tiap transaksi
+		totalBayar *= 0;
 		System.out.println("Pesanan dibayarkan");
 	}
 
 	public void pembelianTdkTerjadi() {
-		
-		produk.pengembalianStok();
+		produks();
+		for (Produk produk: produks) {
+			if(produk.getCatatanStok() != 0){
+				//produk.minStokTerjual(produk.getCatatanStok()); --Diaktifkan jika produks[indeks ke-berapa].sumStokTerjual di method jumlah bayar diaktifkan
+				produk.setCatatanStok(0);
+			}
+		}
+		totalBayar *= 0;
 		System.out.println("Pesanan dibatalkan");
-		
 	}
 	
-	
-	public void kmbliKeAwal() {
-		produk.kmbliKeAwal();
-		System.out.println("Kembali ke stok awal");
+	public void tabelPenjualan() {
+		produks();
+		System.out.println("Jumlah barang yang terjual hari ini");
+		System.out.println("+________________________________________________________________+");
+		for (Produk produk : produks) {
+			System.out.print("| " + produk.getNama() + " | ");
+			fiturTambahan.kursRp(produk.getHarga());
+			System.out.print(" | " + produk.getStokTerjual() + " | ");
+			fiturTambahan.kursRp(produk.getPendapatanStok());
+			bckupTotalPmbyrn += produk.getPendapatanStok();
+			System.out.println("");
+			System.out.println("+________________________________________________________________+");
+		}
+		System.out.println("+________________________________________________________________+");
 	}
 	
-	/*
-	 * Buat sebuah method yang akan mengambil variabel totalSemuaPmbyrn dan diolah menjadi
-	 * fitur ke-3
-	 */
-
-	public void tblPenjualanPerTrnsksi() {
-		
+	public void totalPenjualan() {
+		System.out.println("_________________________________________________________________________");
+		System.out.print("| total pendapatan dari semua stok produk: ");
+		fiturTambahan.kursRp(totalSemuaPmbyrn);
+		System.out.println(" |");
+		System.out.println("_________________________________________________________________________");
 	}
-	
-	
-	/*
-	 * Buat fitur ke-4 yang akan menghasilkan total penjualan per setiap produk
-	 * dengan mengolah nilai yang ada di array 2 dimensi class Produk
-	 */
-
-	public void tblPenjualanPerPrdk() {
-		
-	}
-	
 }
