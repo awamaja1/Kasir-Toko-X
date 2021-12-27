@@ -26,7 +26,7 @@ class Fitur {
 	
 	private int jumlahBeli, produkKey;
 	
-	private boolean[] produkTerjual = new boolean[produks.length];
+	//private boolean[] produkTerjual = new boolean[produks.length];
 	
 	private int pembelianLebihDari1 = 0;
 	
@@ -102,7 +102,7 @@ class Fitur {
 		double hargaBayar = 0;
 		while(indeks > 0 && indeks <= produks.length) {
 			produk = produks[indeks-1];
-			produkTerjual[indeks-1] = produk.equals(produks[indeks-1]);
+			//produkTerjual[indeks-1] = produk.equals(produks[indeks-1]);
 			produk.setCatatanStok(jumlahBeli);
 			//produk.sumStokTerjual(jumlahBeli); --diaktifkan jika ingin menambahkan secara langsung stok produk yang terjual
 			hargaBayar += produk.getHarga() * jumlahBeli;
@@ -120,8 +120,8 @@ class Fitur {
   		System.out.println("\n Total yang harus dibayarkan");
   		System.out.println("-------------------------------");
   		for (int i = 0; i < produks.length; i++) {
-  			if (produkTerjual[i] == true) {
-  				Produk produk = produks[i];
+			Produk produk = produks[i];
+  			if (produk.getCatatanStok() != 0 //produkTerjual[i] == true) {
   				System.out.print(" " + produk.getNama() + " " + produk.getCatatanStok() + " ");
   				fiturTambahan.kursRp(produk.getHarga() * produk.getCatatanStok());
   				System.out.println("");
