@@ -1,6 +1,5 @@
-package aplikasiKasir;
 
-class Kasir {
+public class Kasir {
 
 		private Fitur fitur = new Fitur();
 	
@@ -94,7 +93,7 @@ class Kasir {
 							System.out.print("\n"
 									+ "Tombol: ");
 							key = fitur.inputScanner.next().charAt(0);
-						} while(!(0 < key && key <= 5))
+						} while(!(0 < key && key <= 5));
 						login = true;
 				}
 			}

@@ -1,6 +1,5 @@
-package aplikasiKasir;
 
-class Produk {
+public class Produk {
 
 	private String nama;
 	private double harga;

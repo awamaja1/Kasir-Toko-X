@@ -8,7 +8,7 @@ public class Additional {
 		DecimalFormatSymbols formatRp = new DecimalFormatSymbols();
 		
 		formatRp.setCurrencySymbol("Rp. ");
-		formatRp.setMonetaryGroupingSeparator('.');
+		formatRp.setGroupingSeparator('.');
 		formatRp.setMonetaryDecimalSeparator(',');
 		
 		kursIndonesia.setDecimalFormatSymbols(formatRp);
