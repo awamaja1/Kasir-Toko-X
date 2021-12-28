@@ -6,13 +6,14 @@ public class Kasir {
 		public void main() {
 			// TODO Auto-generated method stub
 			boolean login = true;
+      char key = '*';
 			
 			while (login) {
 				login = false;
-				char key;
 				Boolean dariCase1 = false;
 				
-				System.out.println("\n"
+        if (!(Character.isDigit(key))){
+          	System.out.println("\n"
 						+ "Selamat datang di aplikasi kasir toko kami, silahkan tekan tombol"
 						+ "\n +_______________________________________________________________+"
 						+ "\n |                                                               |"
@@ -22,9 +23,10 @@ public class Kasir {
 						+ "\n | (4) <= jumlah barang yang terjual hari ini                    |"
 						+ "\n | (5) <= logout                                                 |"
 						+ "\n +_______________________________________________________________+");
-				System.out.print("\n"
-						+ "Tombol: ");
-				key = fitur.inputScanner.next().charAt(0);
+			  	System.out.print("\n"
+				  		+ "Tombol: ");
+				  key = fitur.inputScanner.next().charAt(0);
+        }
 				
 				switch (key) {
 					//
@@ -40,7 +42,8 @@ public class Kasir {
 							dariCase1 = true;
 						} else {
 							login = true;
-							break;
+              key = '*';
+              break;
 						}
 					//	
 					case '2':
@@ -58,6 +61,7 @@ public class Kasir {
 						}
 						fitur.strukTagihan();
 						login = true;
+            key = '*';
 						break;
 					//	
 					case '3':
@@ -68,6 +72,7 @@ public class Kasir {
 						jawaban = fitur.inputScanner.next().charAt(0);
 						if (jawaban == 'Y' || jawaban == 'y') {
 							login = true;
+              key = '*';
 							break;
 						} else if (jawaban == 'T' || jawaban == 't') {
 							System.out.println("\nTerima kasih karena sudah memakai aplikasi kasir toko kami, sampai jumpa!");
@@ -81,6 +86,7 @@ public class Kasir {
 						jawaban = fitur.inputScanner.next().charAt(0);
 						if (jawaban == 'Y' || jawaban == 'y') {
 							login = true;
+              key = '*';
 							break;
 						} else if (jawaban == 'T' || jawaban == 't') {
 						}
@@ -92,9 +98,16 @@ public class Kasir {
 						do {
 							System.out.print("\n"
 									+ "Tombol: ");
-							key = fitur.inputScanner.next().charAt(0);
-						} while(!(0 < key && key <= 5));
-						login = true;
+						  key = fitur.inputScanner.next().charAt(0);
+						} while(!(0 < Character.getNumericValue(key) && Character.getNumericValue(key) <= 5));
+            if(Character.getNumericValue(key) == 5) {
+              System.out.println("Terima kasih karena sudah memakai aplikasi kasir toko kami, sampai jumpa!");
+						  break;
+            } else {
+              char draftKey = key;
+              login = true;
+              key = draftKey;
+            }
 				}
 			}
 		}
