@@ -1,9 +1,6 @@
 import java.util.Scanner;
 
 public class Fitur {
-	
-	private Additional fiturTambahan = new Additional();
-	
 	public Scanner inputScanner = new Scanner(System.in);
 
 	private static Produk produk1 = new Produk("Susu UHT", 20000.00);
@@ -47,7 +44,7 @@ public class Fitur {
 		for (int i = 0; i < produks.length; i++) {
 			
 			System.out.print("\n (" + String.valueOf(i+1) + ") " + produks[i].getNama() + " ");
-			fiturTambahan.kursRp(produks[i].getHarga());		
+			Additional.kursRp(produks[i].getHarga());		
 		}
 		
 		System.out.println("\n +___________________________________________________________+");
@@ -127,7 +124,7 @@ public class Fitur {
 			//produk.sumStokTerjual(jumlahBeli); --diaktifkan jika ingin menambahkan secara langsung stok produk yang terjual
 			hargaBayar += produk.getHarga() * jumlahBeli;
 			System.out.print(produk.getNama() + " ");
-			fiturTambahan.kursRp(hargaBayar);
+			Additional.kursRp(hargaBayar);
 			System.out.println("");	
 			indeks = 0;
 	  }
@@ -143,7 +140,7 @@ public class Fitur {
 		  //Produk produk = produks[i];
   		if (produk.getCatatanStok() != 0) {
   			System.out.print(produk.getNama() + " " + produk.getCatatanStok() + " ");
-  			fiturTambahan.kursRp(produk.getHarga() * produk.getCatatanStok());
+  			Additional.kursRp(produk.getHarga() * produk.getCatatanStok());
   			System.out.println("");
 			}
 	  }
@@ -161,7 +158,7 @@ public class Fitur {
   	
 	private void kalkulasiTotal() {
 		System.out.print("Total transaksi yang harus dibayarkan: ");
-		fiturTambahan.kursRp(totalBayar);
+		Additional.kursRp(totalBayar);
 		System.out.println("");
 	}
 	
@@ -197,19 +194,18 @@ public class Fitur {
 		System.out.println("+________________________________________________________________+");
 		for (Produk produk : produks) {
 			System.out.print("| " + produk.getNama() + " | ");
-			fiturTambahan.kursRp(produk.getHarga());
+			Additional.kursRp(produk.getHarga());
 			System.out.print(" | " + produk.getStokTerjual() + " | ");
-			fiturTambahan.kursRp(produk.getPendapatanStok());
+			Additional.kursRp(produk.getPendapatanStok());
 			System.out.println("");
 			System.out.println("+________________________________________________________________+");
 		}
-		System.out.println("+________________________________________________________________+");
 	}
 	
 	public void totalPenjualan() {
 		System.out.println("_________________________________________________________________________");
 		System.out.print("| total pendapatan dari semua stok produk: ");
-		fiturTambahan.kursRp(totalSemuaPmbyrn);
+		Additional.kursRp(totalSemuaPmbyrn);
 		System.out.println(" |");
 		System.out.println("_________________________________________________________________________");
 	}
