@@ -61,21 +61,40 @@ public class Fitur {
 	
 	public boolean validasiPembelianBerulang() {
     produks();
-		System.out.print("\n"
-				+ "Silahkan Pilih Barang, Tekan Q untuk selesai: ");
-		char jawaban = inputScanner.next().charAt(0);
-		boolean pilihProduk = true;
-		if (jawaban == 'Q' || jawaban == 'q') {
-			pilihProduk = false;
-		}else if (this.termasukIndeks(Character.getNumericValue(jawaban))) {
-			this.pembelianProduk(Character.getNumericValue(jawaban));
-			pembelianLebihDari1 += 1;
-			pilihProduk = true;
-		}
-		
+		Character jawaban;
+		boolean pilihProduk = true, validasi = true;
+    do {
+        System.out.print("\n"
+					+ "Silahkan pilih barang, atau tekan Q untuk selesai: ");
+        jawaban = inputScanner.next().charAt(0);
+        if(jawaban.equals('Q') || jawaban.equals('q')){
+          validasi = false;
+        } else if(produks[Character.getNumericValue(jawaban)-1].getCatatanStok() == 0 ) {
+          validasi = false;
+        }
+      } while(validasi);
+      if (jawaban == 'Q' || jawaban == 'q') {
+			  pilihProduk = false;
+		  } else if (this.termasukIndeks(Character.getNumericValue(jawaban))) {
+			  this.pembelianProduk(Character.getNumericValue(jawaban));
+			  pembelianLebihDari1 += 1;
+			  pilihProduk = true;
+		  }
 		return pilihProduk;
 	}
 	
+  private int indeksNol(){
+    produks();
+    int indeks = 0;
+    for(int i=1; i <= produks.length; i++){
+      if(produks[i-1].getCatatanStok() == 0){
+        indeks += i;
+        break;
+      }
+    }
+    return indeks;
+  }
+
 	public void pembelianProduk(int produkKey) {
 		produks();
 		if (!this.termasukIndeks(produkKey)){
@@ -87,16 +106,7 @@ public class Fitur {
       System.out.print("\n"
 					+ "Masukkan jumlah barang: ");
 			  jumlahBeli = inputScanner.nextInt();
-		} else if (produks[produkKey-1].getCatatanStok() != 0) {
-      do {
-        System.out.print("\n"
-					+ "Silahkan Pilih Barang: ");
-			  produkKey = inputScanner.nextInt();
-      } while (produks[produkKey-1].getCatatanStok() != 0);
-      System.out.print("\n"
-					+ "Masukkan jumlah barang: ");
-			  jumlahBeli = inputScanner.nextInt();
-    } else {
+		} else {
 			System.out.print("\n"
 					+ "Masukkan jumlah barang: ");
 			jumlahBeli = inputScanner.nextInt();
@@ -127,17 +137,18 @@ public class Fitur {
   public void strukTagihan() {
   	produks();
   	char jawaban;
-  	System.out.println("\n Total yang harus dibayarkan");
+  	System.out.println("\nTotal tagihan transaksi: ");
   	System.out.println("-------------------------------");
-  	for (int i = 0; i < produks.length; i++) {
-		  Produk produk = produks[i];
+  	for (Produk produk: produks) {
+		  //Produk produk = produks[i];
   		if (produk.getCatatanStok() != 0) {
-  			System.out.print(" " + produk.getNama() + " " + produk.getCatatanStok() + " ");
+  			System.out.print(produk.getNama() + " " + produk.getCatatanStok() + " ");
   			fiturTambahan.kursRp(produk.getHarga() * produk.getCatatanStok());
   			System.out.println("");
 			}
 	  }
 		this.kalkulasiTotal();
+    System.out.println("");
 		System.out.print("Tekan K untuk membayar"
 				+ "\n atau tekan T untuk membatalkan pesanan: ");
 		jawaban = this.inputScanner.next().charAt(0);
@@ -165,7 +176,7 @@ public class Fitur {
 		}
 		totalSemuaPmbyrn += totalBayar; // input semua total pembayaran tiap transaksi
 		totalBayar *= 0;
-		System.out.println("Pesanan dibayarkan");
+		System.out.println("\nPesanan dibayarkan");
 	}
 
 	public void pembelianTdkTerjadi() {
@@ -177,7 +188,7 @@ public class Fitur {
 			}
 		}
 		totalBayar *= 0;
-		System.out.println("Pesanan dibatalkan");
+		System.out.println("\nPesanan dibatalkan");
 	}
 	
 	public void tabelPenjualan() {
