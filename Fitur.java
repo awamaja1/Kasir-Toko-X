@@ -1,9 +1,6 @@
 import java.util.Scanner;
 
 public class Fitur {
-	
-	private Additional fiturTambahan = new Additional();
-	
 	public Scanner inputScanner = new Scanner(System.in);
 
 	private static Produk produk1 = new Produk("Susu UHT", 20000.00);
@@ -47,7 +44,7 @@ public class Fitur {
 		for (int i = 0; i < produks.length; i++) {
 			
 			System.out.print("\n (" + String.valueOf(i+1) + ") " + produks[i].getNama() + " ");
-			fiturTambahan.kursRp(produks[i].getHarga());		
+			Additional.kursRp(produks[i].getHarga());		
 		}
 		
 		System.out.println("\n +___________________________________________________________+");
@@ -61,21 +58,40 @@ public class Fitur {
 	
 	public boolean validasiPembelianBerulang() {
     produks();
-		System.out.print("\n"
-				+ "Silahkan Pilih Barang, Tekan Q untuk selesai: ");
-		char jawaban = inputScanner.next().charAt(0);
-		boolean pilihProduk = true;
-		if (jawaban == 'Q' || jawaban == 'q') {
-			pilihProduk = false;
-		}else if (this.termasukIndeks(Character.getNumericValue(jawaban))) {
-			this.pembelianProduk(Character.getNumericValue(jawaban));
-			pembelianLebihDari1 += 1;
-			pilihProduk = true;
-		}
-		
+		Character jawaban;
+		boolean pilihProduk = true, validasi = true;
+    do {
+        System.out.print("\n"
+					+ "Silahkan pilih barang, atau tekan Q untuk selesai: ");
+        jawaban = inputScanner.next().charAt(0);
+        if(jawaban.equals('Q') || jawaban.equals('q')){
+          validasi = false;
+        } else if(produks[Character.getNumericValue(jawaban)-1].getCatatanStok() == 0 ) {
+          validasi = false;
+        }
+      } while(validasi);
+      if (jawaban == 'Q' || jawaban == 'q') {
+			  pilihProduk = false;
+		  } else if (this.termasukIndeks(Character.getNumericValue(jawaban))) {
+			  this.pembelianProduk(Character.getNumericValue(jawaban));
+			  pembelianLebihDari1 += 1;
+			  pilihProduk = true;
+		  }
 		return pilihProduk;
 	}
 	
+  private int indeksNol(){
+    produks();
+    int indeks = 0;
+    for(int i=1; i <= produks.length; i++){
+      if(produks[i-1].getCatatanStok() == 0){
+        indeks += i;
+        break;
+      }
+    }
+    return indeks;
+  }
+
 	public void pembelianProduk(int produkKey) {
 		produks();
 		if (!this.termasukIndeks(produkKey)){
@@ -87,16 +103,7 @@ public class Fitur {
       System.out.print("\n"
 					+ "Masukkan jumlah barang: ");
 			  jumlahBeli = inputScanner.nextInt();
-		} else if (produks[produkKey-1].getCatatanStok() != 0) {
-      do {
-        System.out.print("\n"
-					+ "Silahkan Pilih Barang: ");
-			  produkKey = inputScanner.nextInt();
-      } while (produks[produkKey-1].getCatatanStok() != 0);
-      System.out.print("\n"
-					+ "Masukkan jumlah barang: ");
-			  jumlahBeli = inputScanner.nextInt();
-    } else {
+		} else {
 			System.out.print("\n"
 					+ "Masukkan jumlah barang: ");
 			jumlahBeli = inputScanner.nextInt();
@@ -117,7 +124,7 @@ public class Fitur {
 			//produk.sumStokTerjual(jumlahBeli); --diaktifkan jika ingin menambahkan secara langsung stok produk yang terjual
 			hargaBayar += produk.getHarga() * jumlahBeli;
 			System.out.print(produk.getNama() + " ");
-			fiturTambahan.kursRp(hargaBayar);
+			Additional.kursRp(hargaBayar);
 			System.out.println("");	
 			indeks = 0;
 	  }
@@ -127,17 +134,18 @@ public class Fitur {
   public void strukTagihan() {
   	produks();
   	char jawaban;
-  	System.out.println("\n Total yang harus dibayarkan");
+  	System.out.println("\nTotal tagihan transaksi: ");
   	System.out.println("-------------------------------");
-  	for (int i = 0; i < produks.length; i++) {
-		  Produk produk = produks[i];
+  	for (Produk produk: produks) {
+		  //Produk produk = produks[i];
   		if (produk.getCatatanStok() != 0) {
-  			System.out.print(" " + produk.getNama() + " " + produk.getCatatanStok() + " ");
-  			fiturTambahan.kursRp(produk.getHarga() * produk.getCatatanStok());
+  			System.out.print(produk.getNama() + " " + produk.getCatatanStok() + " ");
+  			Additional.kursRp(produk.getHarga() * produk.getCatatanStok());
   			System.out.println("");
 			}
 	  }
 		this.kalkulasiTotal();
+    System.out.println("");
 		System.out.print("Tekan K untuk membayar"
 				+ "\n atau tekan T untuk membatalkan pesanan: ");
 		jawaban = this.inputScanner.next().charAt(0);
@@ -150,7 +158,7 @@ public class Fitur {
   	
 	private void kalkulasiTotal() {
 		System.out.print("Total transaksi yang harus dibayarkan: ");
-		fiturTambahan.kursRp(totalBayar);
+		Additional.kursRp(totalBayar);
 		System.out.println("");
 	}
 	
@@ -165,7 +173,7 @@ public class Fitur {
 		}
 		totalSemuaPmbyrn += totalBayar; // input semua total pembayaran tiap transaksi
 		totalBayar *= 0;
-		System.out.println("Pesanan dibayarkan");
+		System.out.println("\nPesanan dibayarkan");
 	}
 
 	public void pembelianTdkTerjadi() {
@@ -177,7 +185,7 @@ public class Fitur {
 			}
 		}
 		totalBayar *= 0;
-		System.out.println("Pesanan dibatalkan");
+		System.out.println("\nPesanan dibatalkan");
 	}
 	
 	public void tabelPenjualan() {
@@ -186,19 +194,18 @@ public class Fitur {
 		System.out.println("+________________________________________________________________+");
 		for (Produk produk : produks) {
 			System.out.print("| " + produk.getNama() + " | ");
-			fiturTambahan.kursRp(produk.getHarga());
+			Additional.kursRp(produk.getHarga());
 			System.out.print(" | " + produk.getStokTerjual() + " | ");
-			fiturTambahan.kursRp(produk.getPendapatanStok());
+			Additional.kursRp(produk.getPendapatanStok());
 			System.out.println("");
 			System.out.println("+________________________________________________________________+");
 		}
-		System.out.println("+________________________________________________________________+");
 	}
 	
 	public void totalPenjualan() {
 		System.out.println("_________________________________________________________________________");
 		System.out.print("| total pendapatan dari semua stok produk: ");
-		fiturTambahan.kursRp(totalSemuaPmbyrn);
+		Additional.kursRp(totalSemuaPmbyrn);
 		System.out.println(" |");
 		System.out.println("_________________________________________________________________________");
 	}

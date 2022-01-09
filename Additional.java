@@ -3,7 +3,7 @@ import java.text.DecimalFormatSymbols;
 
 public class Additional {
 	
-	public void kursRp(Double angka) {
+	public static void kursRp(Double angka) {
 		DecimalFormat kursIndonesia = (DecimalFormat) DecimalFormat.getCurrencyInstance();
 		DecimalFormatSymbols formatRp = new DecimalFormatSymbols();
 		
