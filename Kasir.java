@@ -1,9 +1,9 @@
 
 public class Kasir {
 
-		private Fitur fitur = new Fitur();
+		private static Fitur fitur = new Fitur();
 	
-		public void main() {
+		public static void main() {
 			// TODO Auto-generated method stub
 			boolean login = true;
       char key = '*';
