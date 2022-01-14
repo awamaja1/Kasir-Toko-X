@@ -14,7 +14,7 @@ public class Kasir {
 				
         if (!(Character.isDigit(key))){
           	System.out.println("\n"
-						+ "Selamat datang di aplikasi kasir toko Hahay, silahkan tekan tombol"
+						+ "Selamat datang di aplikasi kasir toko X, silahkan tekan tombol"
 						+ "\n +_______________________________________________________________+"
 						+ "\n |                                                               |"
 						+ "\n | (1) <= cek harga barang                                       |"
